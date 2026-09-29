@@ -1,0 +1,15 @@
+# Données et bases locales : volumineuses et reproductibles (voir README)
+data/raw/
+*.duckdb
+*.duckdb.wal
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# dbt
+target/
+dbt_packages/
+logs/
