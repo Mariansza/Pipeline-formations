@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: brut
+    description: Copies fidèles des CSV Parcoursup, chargées à la main dans DuckDB (étape 1).
+    schema: main
+    tables:
+      - name: raw_parcoursup_2025
+        description: Vœux et réponses, session 2025. Une ligne par formation (clé cod_aff_form).
+      - name: raw_cartographie
+        description: Cartographie des formations, sessions 2020-2026. Une ligne par formation et par année (clé annee, gta).

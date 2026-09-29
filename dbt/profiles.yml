@@ -1,0 +1,8 @@
+formations:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Relatif au dossier depuis lequel on lance dbt (dbt/).
+      path: ../formations.duckdb
+      threads: 4

@@ -1,0 +1,14 @@
+name: formations
+version: "1.0.0"
+profile: formations
+
+model-paths: ["models"]
+
+vars:
+  # Académie sur laquelle on itère ; "toutes" désactive le filtre.
+  academie: Strasbourg
+
+models:
+  formations:
+    staging:
+      +materialized: view
