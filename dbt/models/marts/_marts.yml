@@ -21,6 +21,11 @@ models:
         description: >
           exacte ou floue si la formation figure dans les deux sources ; aucune si elle ne figure
           que dans l'une des deux.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['exacte', 'floue', 'aucune']
       - name: a_statistiques
         description: Vrai si la formation figure dans le fichier des vœux (sinon les chiffres et le taux sont vides).
         data_tests:

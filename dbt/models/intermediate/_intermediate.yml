@@ -27,3 +27,20 @@ models:
         data_tests:
           - unique
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_parcoursup_2025')
+                field: formation_id
+      - name: cartographie_formation_id
+        description: Vide quand aucune correspondance n'a été trouvée.
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_cartographie')
+                field: formation_id
+      - name: methode_appariement
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['exacte', 'floue', 'aucune']

@@ -9,6 +9,11 @@ models:
         data_tests:
           - unique
           - not_null
+          # Aucune formation des vœux ne doit disparaître avant le référentiel final.
+          - relationships:
+              arguments:
+                to: ref('formations')
+                field: formation_id
 
   - name: stg_departements
     description: Pont département -> académie, dérivé des vœux. Une ligne par département.
