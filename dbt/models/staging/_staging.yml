@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_parcoursup_2025
+    description: Vœux et réponses Parcoursup, session 2025. Une ligne par formation.
+    columns:
+      - name: formation_id
+        description: Identifiant Parcoursup de la formation (cod_aff_form).
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_departements
+    description: Pont département -> académie, dérivé des vœux. Une ligne par département.
+    columns:
+      - name: departement_cle
+        description: Nom du département en minuscules.
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_cartographie
+    description: Cartographie des formations. Une ligne par formation et par session.
+    columns:
+      - name: annee
+        data_tests:
+          - not_null
+      - name: formation_id
+        description: Identifiant Parcoursup de la formation (gta). Unique par année seulement.
+        data_tests:
+          - not_null
