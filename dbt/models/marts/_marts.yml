@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: formations
+    description: >
+      Référentiel des formations, une ligne par formation connue d'au moins une source
+      (cartographie de la session des vœux, plus les formations des vœux sans correspondance).
+    columns:
+      - name: formation_id
+        description: Identifiant Parcoursup de la formation (gta dans la cartographie, cod_aff_form dans les vœux).
+        data_tests:
+          - unique
+          - not_null
+      - name: academie
+        description: >
+          Académie de l'établissement quand la formation figure dans les vœux ; sinon académie du lieu
+          d'enseignement, déduite du département de la cartographie. Les deux notions diffèrent pour
+          35 formations appariées sur 14 214 (par exemple un campus d'une université parisienne
+          situé dans une autre académie).
+      - name: methode_appariement
+        description: >
+          exacte ou floue si la formation figure dans les deux sources ; aucune si elle ne figure
+          que dans l'une des deux.
+      - name: a_statistiques
+        description: Vrai si la formation figure dans le fichier des vœux (sinon les chiffres et le taux sont vides).
+        data_tests:
+          - not_null
+      - name: taux_admission
+        description: >
+          Part des candidats à qui la formation a proposé une place, en pourcentage
+          (nb_propositions / nb_voeux). Vide sans statistiques ; 0 signifie aucune proposition.
+      - name: taux_acces_officiel
+        description: Taux d'accès publié par Parcoursup, repris tel quel (définition propre à la source, non reproductible par division).
+
+  - name: selectivite_par_academie
+    description: Sélectivité par académie, calculée sur les formations qui ont des statistiques.
+    columns:
+      - name: academie
+        data_tests:
+          - unique
+          - not_null
