@@ -1,19 +1,19 @@
 # Pipeline formations
 
-Référentiel de formations post-bac construit à partir de deux jeux Parcoursup en open data, avec **DuckDB**, **dbt Core** et **Dagster**. Projet d'entraînement au Data Engineering.
+Référentiel de formations post-bac construit à partir de deux jeux Parcoursup en open data, avec **DuckDB**, **dbt Core** et **Dagster**. Ceci est un projet personnel pour m'entraîner avec une certaine stack (DuckDB, dbt, Dagster) sur des données de formations en France.
 
 Le pipeline télécharge les deux sources, rapproche leurs formations, calcule un taux d'admission et publie une table canonique `formations` (une ligne par formation) ainsi qu'une vue de sélectivité par académie. Des contrôles de qualité automatiques protègent chaque couche, et tout est orchestré par Dagster.
 
 ## En chiffres
 
-| | |
-|---|---|
-| Formations avec statistiques de vœux (session 2025) | 14 252 |
-| Lignes de la cartographie (sessions 2020 à 2026) | 157 509 |
-| Formations dans le référentiel final | **25 865** |
-| Appariement exact (identifiant commun) | 14 214 sur 14 252 (99,7 %) |
-| Contrôles | 28 tests dbt + 2 contrôles Python bloquants |
-| Exécution complète du pipeline | environ 1 minute |
+|                                                     |                                             |
+| --------------------------------------------------- | ------------------------------------------- |
+| Formations avec statistiques de vœux (session 2025) | 14 252                                      |
+| Lignes de la cartographie (sessions 2020 à 2026)    | 157 509                                     |
+| Formations dans le référentiel final                | **25 865**                                  |
+| Appariement exact (identifiant commun)              | 14 214 sur 14 252 (99,7 %)                  |
+| Contrôles                                           | 28 tests dbt + 2 contrôles Python bloquants |
+| Exécution complète du pipeline                      | environ 1 minute                            |
 
 ## Architecture
 
@@ -61,12 +61,12 @@ flowchart LR
     F --> SA
 ```
 
-| Couche | Rôle |
-|---|---|
-| `raw_*` | Copie fidèle des CSV dans DuckDB, sans nettoyage. |
+| Couche  | Rôle                                                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `raw_*` | Copie fidèle des CSV dans DuckDB, sans nettoyage.                                                                                                      |
 | `stg_*` | Un modèle par source : renommage, typage, nettoyage léger, aucune règle métier. `stg_departements` est un pont département → académie dérivé des vœux. |
-| `int_*` | Résolution d'entités : jointure exacte, puis repli approximatif, puis table de correspondance. |
-| marts | `formations` (référentiel et taux d'admission) et `selectivite_par_academie` (vue agrégée). |
+| `int_*` | Résolution d'entités : jointure exacte, puis repli approximatif, puis table de correspondance.                                                         |
+| marts   | `formations` (référentiel et taux d'admission) et `selectivite_par_academie` (vue agrégée).                                                            |
 
 ![Graphe des assets dans Dagster](docs/images/dagster-graphe.png)
 
@@ -80,19 +80,19 @@ flowchart LR
 
 Exemple de résultat (vue `selectivite_par_academie`) :
 
-| Académie | Formations | Taux moyen par formation | Taux global |
-|---|---|---|---|
-| Mayotte | 43 | 20,9 % | 15,3 % |
-| Paris | 1 034 | 32,0 % | 18,1 % |
-| Toulouse | 651 | 41,1 % | 28,2 % |
-| Strasbourg | 384 | 43,4 % | 35,2 % |
-| La Réunion | 246 | 47,2 % | 49,1 % |
+| Académie   | Formations | Taux moyen par formation | Taux global |
+| ---------- | ---------- | ------------------------ | ----------- |
+| Mayotte    | 43         | 20,9 %                   | 15,3 %      |
+| Paris      | 1 034      | 32,0 %                   | 18,1 %      |
+| Toulouse   | 651        | 41,1 %                   | 28,2 %      |
+| Strasbourg | 384        | 43,4 %                   | 35,2 %      |
+| La Réunion | 246        | 47,2 %                   | 49,1 %      |
 
 ## Qualité des données
 
 - **dbt (28 tests).** Unicité et non-nullité des clés, intégrité référentielle (`relationships`, dont « aucune formation des vœux n'est perdue avant le référentiel final »), valeurs acceptées pour la méthode d'appariement, et quatre tests singuliers dans [dbt/tests/](dbt/tests/) : clé composée de la cartographie, cohérence du taux, entonnoir acceptations ≤ propositions ≤ vœux, et un **avertissement** (non bloquant) sur les formations qui acceptent plus de candidats que leur capacité (anomalie connue de la source).
 - **Python (2 contrôles bloquants).** Nombre minimal de lignes et colonnes clés présentes sur chaque table brute. S'ils échouent, les modèles dbt en aval ne s'exécutent pas.
-- Les tests dbt remontent dans Dagster sous forme d'*asset checks*.
+- Les tests dbt remontent dans Dagster sous forme d'_asset checks_.
 
 ## Orchestration
 
