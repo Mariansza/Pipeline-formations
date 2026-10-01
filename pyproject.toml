@@ -3,6 +3,8 @@ name = "pipeline-formations"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "dagster-dbt>=0.29.25",
+    "dagster-webserver>=1.13.25",
     "dbt-duckdb>=1.11.0",
     "duckdb==1.5.6",
 ]

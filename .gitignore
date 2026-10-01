@@ -14,3 +14,7 @@ target/
 dbt_packages/
 logs/
 .user.yml
+
+# Dagster (dossier d'instance temporaire créé par `dagster dev`)
+.tmp_dagster_home_*/
+.dagster/
