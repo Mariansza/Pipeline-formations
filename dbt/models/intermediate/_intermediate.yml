@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_appariement_exact
+    description: Formations des vœux retrouvées dans la cartographie par l'identifiant commun.
+    columns:
+      - name: formation_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: int_appariement_flou
+    description: Repli approximatif (même UAI, noms proches) pour les formations sans correspondance exacte.
+    columns:
+      - name: formation_id
+        data_tests:
+          - unique
+      - name: cartographie_formation_id
+        description: Une formation de la cartographie ne peut être choisie que par une seule formation des vœux.
+        data_tests:
+          - unique
+
+  - name: int_formations_appariees
+    description: Une ligne par formation des vœux, avec sa correspondance dans la cartographie, la méthode et le score.
+    columns:
+      - name: formation_id
+        data_tests:
+          - unique
+          - not_null

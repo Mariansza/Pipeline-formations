@@ -6,9 +6,14 @@ model-paths: ["models"]
 
 vars:
   # Académie sur laquelle on itère ; "toutes" désactive le filtre.
-  academie: Strasbourg
+  # Élargi à "toutes" à l'étape 3 : les formations non appariées ne sont pas à Strasbourg.
+  academie: toutes
+  # Score de similarité minimal (0 à 1) pour accepter un rapprochement approximatif.
+  seuil_flou: 0.90
 
 models:
   formations:
     staging:
       +materialized: view
+    intermediate:
+      +materialized: table

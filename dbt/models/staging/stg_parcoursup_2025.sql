@@ -1,6 +1,7 @@
 -- Une ligne par formation (session 2025).
 -- Staging : on renomme, on type, on garde les colonnes utiles. Pas de règle métier ici.
 select
+    cast(session as bigint) as annee,
     cast(cod_aff_form as bigint) as formation_id,
     cod_uai as uai,
     g_ea_lib_vx as etablissement_nom,
